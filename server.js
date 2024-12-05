@@ -1,15 +1,17 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const OpenAI = require('openai');
+const { Configuration, OpenAIApi } = require('openai');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Initialize OpenAI
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+    organization: 'org-AF7ZQp6bVXrKBBUNMAPRtBDj'
 });
+const openai = new OpenAIApi(configuration);
 
 // CORS configuration
 const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
@@ -39,7 +41,7 @@ app.post('/api/chat', async (req, res) => {
             return res.status(400).json({ error: 'Question is required' });
         }
 
-        const completion = await openai.chat.completions.create({
+        const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             messages: [
                 {
@@ -55,12 +57,12 @@ app.post('/api/chat', async (req, res) => {
             temperature: 0.7
         });
 
-        res.json({ answer: completion.choices[0].message.content.trim() });
+        res.json({ answer: completion.data.choices[0].message.content.trim() });
     } catch (error) {
-        console.error('API Error:', error);
+        console.error('API Error:', error.response?.data || error);
         res.status(500).json({ 
             error: 'Failed to get answer',
-            details: error.message 
+            details: error.response?.data?.error?.message || error.message 
         });
     }
 });
