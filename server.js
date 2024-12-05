@@ -8,7 +8,8 @@ const port = process.env.PORT || 3000;
 
 // Initialize OpenAI
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+    apiKey: process.env.OPENAI_API_KEY,
+    organization: 'org-AF7ZQp6bVXrKBBUNMAPRtBDj'  // Add your organization ID
 });
 
 // CORS configuration
