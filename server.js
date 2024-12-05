@@ -8,9 +8,7 @@ const port = process.env.PORT || 3000;
 
 // Initialize OpenAI
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY.replace('sk-proj-', 'sk-'),  // Convert project API key to legacy format
-    organization: 'org-AF7ZQp6bVXrKBBUNMAPRtBDj',
-    baseURL: 'https://api.openai.com/v1'
+    apiKey: process.env.OPENAI_API_KEY
 });
 
 // CORS configuration
